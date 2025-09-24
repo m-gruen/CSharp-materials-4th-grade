@@ -8,11 +8,11 @@ public class AdderTest
     public void Add_Success()
     {
         // Arrange
-        const int A = 17;
-        const int B = 15;
+        const long A = 17;
+        const long B = 15;
 
         // Act
-        int result = _sut.Add(A, B);
+        long result = _sut.Add(A, B);
 
         // Assert
         result.Should().Be(A + B);
