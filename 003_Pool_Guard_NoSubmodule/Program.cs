@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using PoolGuard.Core;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,24 +12,24 @@ builder.Services.ConfigureServices(builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 
-if(builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseCors(Setup.CorsPolicyName);
 
-app.MapGet("/hello/{name}", (string? name, IClock clock) =>
-   {
-       if (string.IsNullOrWhiteSpace(name))
-       {
-           return Results.BadRequest();
-       }
+app.MapGet("/hello/{name}", ([FromRoute] string? name, [FromServices] IClock clock) =>
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return Results.BadRequest();
+        }
 
-       var now = clock.GetCurrentInstant();
+        var now = clock.GetCurrentInstant();
 
-       return Results.Ok(new Greeting(name, now));
-   })
+        return Results.Ok(new Greeting(name, now));
+    })
    .Produces<Greeting>(StatusCodes.Status200OK)
    .Produces(StatusCodes.Status400BadRequest)
    .WithName("Greetings")
