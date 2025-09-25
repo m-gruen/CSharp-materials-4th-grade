@@ -11,6 +11,7 @@ public static class Setup
     public static void RegisterServices(this IServiceCollection services)
     {
         services.AddSingleton<IClock>(SystemClock.Instance);
+        services.AddTransient<ITicketGenerator, TicketGenerator>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, bool isDevelopment)
