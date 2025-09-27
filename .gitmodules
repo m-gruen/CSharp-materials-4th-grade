@@ -1,3 +1,6 @@
 [submodule "001_Global_Race"]
 	path = 001_Global_Race
 	url = git@github.com:2526-4ahif-pose/ex-intro-01-global-race-m-gruen.git
+[submodule "003_Pool_Guard"]
+	path = 003_Pool_Guard
+	url = git@github.com:2526-4ahif-pose/ex-mapi-01-poolguard-m-gruen.git
