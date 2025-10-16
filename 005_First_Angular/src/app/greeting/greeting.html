@@ -1,0 +1,9 @@
+<p>
+  @let name = currentName();
+    @if (name.length < 10) {
+      <span>Hello {{ currentName() }}</span>
+    } @else {
+    <span>Bye {{ currentName() }}</span>
+    }
+</p>
+<button matButton="tonal" (click)="greet()">Greet</button>
