@@ -12,6 +12,7 @@ export class Greeting {
   protected readonly currentName: Signal<string> = computed(() => {
     return this.names[this.currentNameIdx()];
   });
+  protected readonly greetedPeople: WritableSignal<string[]> = signal([]);
 
   protected greet(): void {
     this.currentNameIdx.update(n => n + 1);
@@ -19,5 +20,6 @@ export class Greeting {
     if (this.currentNameIdx() >= this.names.length) {
       this.currentNameIdx.set(0);
     }
+    this.greetedPeople.update(old => [...old, this.currentName()]);
   }
 }
