@@ -1,18 +1,14 @@
 <div class="container">
-  <p>
-    @let name = currentName();
-    @if (name.length < 10) {
-      <span>Hello {{ currentName() }}</span>
-    } @else {
-      <span>Bye {{ currentName() }}</span>
-    }
-  </p>
-  <button matButton="tonal" (click)="greet()">Greet</button>
-  <ul>
-    @for (name of greetedPeople(); track $index) {
-      <li>{{ name }}</li>
-    } @empty {
-      <span>Nobody has been greeted yet.</span>
-    }
-  </ul>
+  <button matButton="elevated" (click)="greet()" class="greet-btn">Greet</button>
+  <app-greeting-instructions
+    #instructions
+    [notStarted]="greetedPeople().length === 0"/>
+
+  @for (person of greetedPeople(); track $index) {
+    <app-greeting-display
+      [name]="person"
+      (onClicked)="handelDisplayClicked($event)"/>
+  } @empty {
+    <span>No one has been greeted yet!</span>
+  }
 </div>
