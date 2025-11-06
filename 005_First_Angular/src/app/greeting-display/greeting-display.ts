@@ -20,7 +20,7 @@ export class GreetingDisplay {
 
   protected handleClick(type: TitleOrContent): void {
     const clickEvent: ClickEvent = [type, this.name()];
-    this.onClick.emit(clickEvent);
+    this.onClicked.emit(clickEvent);
   }
 }
 
