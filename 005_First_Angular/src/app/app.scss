@@ -1,12 +1,41 @@
-.container {
-  height: 100vh;
+$margin: 0.5rem;
+$padding: calc($margin * 2);
+
+#main-container {
+  margin-left: $margin;
+  margin-right: $margin;
+  margin-top: calc($margin / 2);
+  padding-left: $padding;
+  padding-right: $padding;
+  padding-top: calc($padding / 2);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+mat-sidenav {
+  width: 200px;
+}
+
+mat-sidenav-content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
+  max-width: 70rem;
+}
 
-  .counter-text {
-    font-size: 2rem;
-  }
+.sticky-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  align-items: center;
 }

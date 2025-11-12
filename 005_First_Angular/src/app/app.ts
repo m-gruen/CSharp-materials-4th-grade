@@ -1,17 +1,45 @@
-import { Component, signal, WritableSignal } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { Greeting } from './greeting/greeting';
+import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {Greeting} from './greeting/greeting';
+import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
+import {AsyncPipe} from '@angular/common';
+import {MatToolbar} from '@angular/material/toolbar';
+import {MatListItem, MatNavList} from '@angular/material/list';
+import {MatIcon} from '@angular/material/icon';
+import {RouterOutlet} from '@angular/router';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {map, Observable, refCount, shareReplay} from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [MatButton, Greeting],
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    AsyncPipe,
+    MatToolbar,
+    MatNavList,
+    MatListItem,
+    MatSidenavContent,
+    MatIconButton,
+    MatIcon,
+    RouterOutlet
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly clickCount: WritableSignal<number> = signal(0);
+  protected readonly title = "Tank Museum";
+  private readonly breakpointObserver: BreakpointObserver = inject(BreakpointObserver);
+  protected readonly isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay({bufferSize: 1, refCount: true})
+    );
 
-  protected handleClick(): void {
-    this.clickCount.update((n: number) => n + 1);
-  }
+  protected readonly isNotHandset$: Observable<boolean> = this.isHandset$
+    .pipe(
+      map(isHandset => !isHandset),
+      shareReplay({bufferSize: 1, refCount: true})
+    );
 }

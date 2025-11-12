@@ -1,6 +1,37 @@
-<div class="container">
-  <span class="counter-text">{{ clickCount() }}</span>
-  <button matButton="elevated" (click)="handleClick()">Click me</button>
-
-  <app-greeting/>
-</div>
+<mat-sidenav-container>
+  <mat-sidenav #drawer
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isNotHandset$ | async)">
+    @if (isNotHandset$ | async) {
+      <mat-toolbar class="title-container">
+        <span>{{ title }}</span>
+      </mat-toolbar>
+    }
+    <mat-nav-list>
+      <a mat-list-item href="https://www.htl-leonding.at/">A</a>
+      <a mat-list-item href="https://get.dot.net">B</a>
+      <a mat-list-item href="https://angular.dev">C</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="sticky-toolbar">
+      @if (isHandset$ | async) {
+        <button type="button"
+                aria-label="Toggle sidenav"
+                mat-icon-button
+                (click)="drawer.toggle()">
+          <mat-icon>
+            menu
+          </mat-icon>
+        </button>
+        <div class="title-container">
+          <span>{{ title }}</span>
+        </div>
+      }
+    </mat-toolbar>
+    <div id="main-container">
+      <router-outlet/>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
