@@ -18,12 +18,10 @@ import {NavItem} from './shared/nav-item/nav-item';
     AsyncPipe,
     MatToolbar,
     MatNavList,
-    MatListItem,
     MatSidenavContent,
     MatIconButton,
     MatIcon,
     RouterOutlet,
-    RouterLink,
     NavItem
   ],
   templateUrl: './app.html',

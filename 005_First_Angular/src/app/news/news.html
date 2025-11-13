@@ -1,1 +1,15 @@
-<p>news works!</p>
+@if (showAllNews()) {
+  <p>Showing all news ever published</p>
+} @else if (toDate() === undefined) {
+  <p>Showing news since {{ fromDate()?.toString() | date }}</p>
+} @else if (fromDate() === undefined) {
+  <p>Showing news until {{ toDate()?.toString() | date }}</p>
+} @else {
+  <p>Showing news from
+    {{
+      fromDate()?.toString() | date:"dd.MM.yyyy"
+    }} to
+    {{
+      toDate()?.toString() | date:"shortDate"
+    }}</p>
+}
