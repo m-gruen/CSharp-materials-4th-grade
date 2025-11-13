@@ -9,9 +9,12 @@
       </mat-toolbar>
     }
     <mat-nav-list>
-      <a mat-list-item href="https://www.htl-leonding.at/">A</a>
-      <a mat-list-item href="https://get.dot.net">B</a>
-      <a mat-list-item href="https://angular.dev">C</a>
+      <app-nav-item route="news" [iconName]="'newspaper'">
+        News
+      </app-nav-item>
+      <app-nav-item [route]="'contacts'" [iconName]="'alternate_email'">
+        Weather
+      </app-nav-item>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

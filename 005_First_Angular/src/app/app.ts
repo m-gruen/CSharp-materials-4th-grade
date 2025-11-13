@@ -1,14 +1,14 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {Greeting} from './greeting/greeting';
+import {Component, inject} from '@angular/core';
+import {MatIconButton} from '@angular/material/button';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
 import {AsyncPipe} from '@angular/common';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatListItem, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
-import {RouterOutlet} from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {map, Observable, refCount, shareReplay} from 'rxjs';
+import {map, Observable, shareReplay} from 'rxjs';
+import {NavItem} from './shared/nav-item/nav-item';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,9 @@ import {map, Observable, refCount, shareReplay} from 'rxjs';
     MatSidenavContent,
     MatIconButton,
     MatIcon,
-    RouterOutlet
+    RouterOutlet,
+    RouterLink,
+    NavItem
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -34,7 +36,7 @@ export class App {
     .observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
-      shareReplay({bufferSize: 1, refCount: true})
+      shareReplay({bufferSize: 1, refCount: true}) // save the latest value for new subscribers
     );
 
   protected readonly isNotHandset$: Observable<boolean> = this.isHandset$
