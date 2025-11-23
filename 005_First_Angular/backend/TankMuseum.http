@@ -1,0 +1,61 @@
+@BaseUrl = http://localhost:5200
+@NewsUrl = {{BaseUrl}}/api/news
+@ExhibitsUrl = {{BaseUrl}}/api/exhibits
+
+### Get all news items
+GET {{NewsUrl}}
+
+### Get news items in range
+GET {{NewsUrl}}?from=2012-06-15&to=2024-04-29
+
+### Get all exhibits
+GET {{ExhibitsUrl}}
+
+### Get exhibit details
+GET {{ExhibitsUrl}}/4
+
+### Add new exhibit
+POST {{ExhibitsUrl}}
+Content-Type: application/json
+
+{
+    "name": "LEOpard",
+    "description": "HTL Leonding cardboard tank",
+    "serviceStartYear": 2024,
+    "serviceEndYear": null,
+    "unitsProduced": 1,
+    "country": "Austria",
+    "armor": "old cardboard",
+    "armament": "confetti canon",
+    "crew": 2,
+    "imageUrl": "https://know.make.do/cdn/shop/products/Makedo_Vehicles_-_Tank_-_uploaded_by_eduardoiherrera_USA_1024x.jpeg?v=1564024632"
+}
+
+> {% 
+    client.global.set("exhibitId", response.body.id);
+    client.global.set("addedDate", response.body.addedToMuseumCollectionAt);
+%}
+
+### Update exhibit
+PATCH {{ExhibitsUrl}}/{{exhibitId}}
+Content-Type: application/json
+
+{
+    "name": "LEOpard",
+    "description": "HTL Leonding non-functional cardboard tank",
+    "serviceStartYear": 2024,
+    "serviceEndYear": 2026,
+    "addedToMuseumCollectionAt": "{{addedDate}}",
+    "unitsProduced": 1,
+    "country": "Austria",
+    "armor": "old cardboard",
+    "armament": "confetti canon",
+    "crew": 2,
+    "imageUrl": "https://know.make.do/cdn/shop/products/Makedo_Vehicles_-_Tank_-_uploaded_by_eduardoiherrera_USA_1024x.jpeg?v=1564024632"
+}
+
+### Get updated details of new exhibit
+GET {{ExhibitsUrl}}/{{exhibitId}}
+
+### Delete exhibit
+DELETE {{ExhibitsUrl}}/{{exhibitId}}
