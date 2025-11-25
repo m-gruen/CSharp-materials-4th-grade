@@ -1,6 +1,6 @@
 import {
   Component,
-  computed, inject,
+  computed, inject, Injectable,
   input,
   InputSignal,
   OnChanges,
@@ -13,6 +13,35 @@ import {LocalDate} from '@js-joda/core';
 import {DatePipe} from '@angular/common';
 import {NewsItem, NewsService} from '../../core/services/news-service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {FavoriteExhibitService} from '../../core/services/favorite-exhibit-service';
+import {MatIcon} from '@angular/material/icon';
+import {NewsFilter} from './news-filter/news-filter';
+import {MatButton} from '@angular/material/button';
+
+// we have to define the service before using it
+@Injectable()
+class FilterService {
+  public filterSortAndMap(newsItems: NewsItem[], favoriteIds: Set<number>,
+                          textFilter: string, sortAscending: boolean):
+    NewsItemDisplay[] {
+    const filter = textFilter.toLowerCase().trim();
+    let source = newsItems;
+    if (filter !== "") {
+      source = newsItems
+        .filter((newsItem: NewsItem) => newsItem.title.toLowerCase().includes(filter)
+          || newsItem.content.toLowerCase().includes(filter));
+    }
+    return source
+      .map((newsItem: NewsItem) => ({
+        ...newsItem,
+        referencesFavorite: newsItem.relatedExhibitIds.some(id => favoriteIds.has(id))
+      }))
+      .sort((a: NewsItemDisplay, b: NewsItemDisplay) => {
+        const dateComparison: number = a.publishedAt.compareTo(b.publishedAt);
+        return sortAscending ? dateComparison : -dateComparison;
+      });
+  }
+}
 
 @Component({
   selector: 'app-news',
@@ -21,8 +50,12 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/mat
     MatCard,
     MatCardHeader,
     MatCardTitle,
-    MatCardContent
+    MatCardContent,
+    MatIcon,
+    NewsFilter,
+    MatButton
   ],
+  providers: [FilterService],
   templateUrl: './news.html',
   styleUrl: './news.scss',
 })
@@ -35,7 +68,18 @@ export class News implements OnChanges {
     return !this.fromDate() && !this.toDate();
   });
   private readonly service: NewsService = inject(NewsService);
-  protected readonly newsItems: WritableSignal<NewsItem[]> = signal([]);
+  private readonly favoriteExhibitService: FavoriteExhibitService =
+    inject(FavoriteExhibitService);
+  private readonly filterService: FilterService = inject(FilterService);
+  private readonly newsItems: WritableSignal<NewsItem[]> = signal([]);
+  protected readonly displayItems: Signal<NewsItemDisplay[]> = computed(() => {
+    return this.filterService.filterSortAndMap(this.newsItems(),
+      this.favoriteExhibitService.favoriteIds(),
+      this.textFilter(), this.sortAscending());
+  });
+
+  protected readonly textFilter: WritableSignal<string> = signal("");
+  protected readonly sortAscending: WritableSignal<boolean> = signal(true);
 
   private async loadData(): Promise<void> {
     let news
@@ -73,4 +117,8 @@ export class News implements OnChanges {
   private static parseDateParam(paramValue: string | undefined): LocalDate | undefined {
     return paramValue ? LocalDate.parse(paramValue) : undefined;
   }
+}
+
+type NewsItemDisplay = NewsItem & {
+  referencesFavorite: boolean;
 }

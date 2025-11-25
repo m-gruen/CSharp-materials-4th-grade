@@ -5,6 +5,9 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+@include mat.elevation-classes();
+@include mat.app-background();
+
 html {
   @include mat.theme((
     color: (
@@ -32,7 +35,19 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --primary-color: var(--mat-sys-primary);
+  --accent-color: var(--mat-sys-tertiary);
+}

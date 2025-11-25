@@ -2,21 +2,26 @@
 @if (showAllNames()) {
   <p>Showing all news ever published</p>
 } @else if (toDate() === undefined) {
-  <p>Showing news since {{fromDate()?.toString() | date}}</p>
+  <p>Showing news since {{ fromDate()?.toString() | date }}</p>
 } @else if (fromDate() === undefined) {
-  <p>Showing news until {{toDate()?.toString() | date}}</p>
+  <p>Showing news until {{ toDate()?.toString() | date }}</p>
 } @else {
   <p>
-    Showing news from {{fromDate()?.toString() | date:"dd.MM.yyyy"}}
-    to {{toDate()?.toString() | date:"shortDate"}}
+    Showing news from {{ fromDate()?.toString() | date:"dd.MM.yyyy" }}
+    to {{ toDate()?.toString() | date:"shortDate" }}
   </p>
 }
+<app-news-filter [(textFilter)]="textFilter" [(sortAscending)]="sortAscending"/>
+<button mat-button (click)="textFilter.set('visitor')">Show visitor news</button>
 <div class="news-container">
-  @for (newsItem of newsItems(); track newsItem) {
+  @for (newsItem of displayItems(); track newsItem) {
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>
           {{ newsItem.title }}
+          @if (newsItem.referencesFavorite) {
+            <mat-icon class="favorite">favorite</mat-icon>
+          }
         </mat-card-title>
       </mat-card-header>
       <mat-card-content class="news-content">

@@ -10,7 +10,7 @@
         <mat-card-title>{{ ex.name }}</mat-card-title>
         <mat-card-subtitle>{{ ex.country }}</mat-card-subtitle>
       </mat-card-header>
-      @let imgUrl = ex.imageUrl ;
+      @let imgUrl = ex.imageUrl;
       @if (imgUrl != undefined) {
         <img mat-card-image [src]="imgUrl" alt="Image of {{ ex.name }}">
       }
@@ -32,9 +32,13 @@
           {{ ex.description }}
         </p>
       </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-button (click)="handleBackBtnClick()">Back</button>
-      </mat-card-actions>
+        <mat-card-actions align="end">
+          <button mat-button (click)="handleBackBtnClick()">Back</button>
+          <button mat-icon-button [class.favorite]="isFavorite()"
+                  (click)="handleFavBtnClick()">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </mat-card-actions>
     </mat-card>
   }
 }
