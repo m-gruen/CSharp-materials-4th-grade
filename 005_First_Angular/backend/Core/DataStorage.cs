@@ -114,7 +114,7 @@ public sealed class DataStorage : IDataStorage
             Armor = "Up to 70 mm",
             Armament = "50 mm KwK 39 L/60 gun",
             Crew = 5,
-            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/1/17/PzKpfwIIIH_Saumur_noBG_01.jpg"
+            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/c/ce/PzKpfwIIIF.Saumur.000a1y8q.jpg"
         },
         new()
         {
