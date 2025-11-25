@@ -16,7 +16,6 @@ import { ExhibitInfo, ExhibitsService } from '../../core/services/exhibit-servic
 @Component({
   selector: "app-exhibit-list",
   imports: [
-    RouterLink,
     MatTable,
     MatHeaderCell,
     MatColumnDef,
