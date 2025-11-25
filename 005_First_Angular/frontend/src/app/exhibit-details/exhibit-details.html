@@ -1,5 +1,40 @@
-@if (id() === undefined) {
+@if (isNaN(id())) {
   <p>No exhibit selected</p>
 } @else {
-  <p>Showing se details for exhibit with id: {{ id() }}</p>
+  @let ex = exhibit();
+  @if (ex == undefined) {
+    <mat-progress-bar mode="indeterminate"/>
+  } @else {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ ex.name }}</mat-card-title>
+        <mat-card-subtitle>{{ ex.country }}</mat-card-subtitle>
+      </mat-card-header>
+      @let imgUrl = ex.imageUrl ;
+      @if (imgUrl != undefined) {
+        <img mat-card-image [src]="imgUrl" alt="Image of {{ ex.name }}">
+      }
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>Units Produced: {{ ex.unitsProduced }}</mat-list-item>
+          <mat-list-item>Year Introduced: {{ ex.serviceStartYear }}</mat-list-item>
+          <mat-list-item>
+            Year Retired: {{ ex.serviceEndYear | toStringOrDefault:"still in use" }}
+          </mat-list-item>
+          <mat-list-item>Armor: {{ ex.armor }}</mat-list-item>
+          <mat-list-item>Armament: {{ ex.armament }}</mat-list-item>
+          <mat-list-item>Crew: {{ ex.crew }}</mat-list-item>
+          <mat-list-item>
+            Added to collection: {{ ex.addedToMuseumCollectionAt.toString() | date:"shortDate" }}
+          </mat-list-item>
+        </mat-list>
+        <p>
+          {{ ex.description }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button (click)="handleBackBtnClick()">Back</button>
+      </mat-card-actions>
+    </mat-card>
+  }
 }
