@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankMuseum", "backend\TankMuseum.csproj", "{38F8808D-28DC-5E6B-C199-05004F1E900B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankMuseum", "TankMuseum.csproj", "{F88BDBF3-3271-BC88-FAAB-471D486091E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{38F8808D-28DC-5E6B-C199-05004F1E900B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38F8808D-28DC-5E6B-C199-05004F1E900B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38F8808D-28DC-5E6B-C199-05004F1E900B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38F8808D-28DC-5E6B-C199-05004F1E900B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F88BDBF3-3271-BC88-FAAB-471D486091E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F88BDBF3-3271-BC88-FAAB-471D486091E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F88BDBF3-3271-BC88-FAAB-471D486091E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F88BDBF3-3271-BC88-FAAB-471D486091E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B7EE6433-63F4-41EC-A024-EA3BCDC43641}
+		SolutionGuid = {24C24ABA-E401-49B7-8326-06F781CCF856}
 	EndGlobalSection
 EndGlobal
