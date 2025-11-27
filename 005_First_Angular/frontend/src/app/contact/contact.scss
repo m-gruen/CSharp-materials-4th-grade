@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  max-width: 28rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+form {
+  margin-top: 1rem;
+}

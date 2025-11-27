@@ -1,1 +1,39 @@
-<p>contact works!</p>
+<div class="container">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        Contact Us
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput [field]="contactForm.name"/>
+          @for (error of contactForm.name().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput [field]="contactForm.email" type="email"/>
+          @for (error of contactForm.email().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Message</mat-label>
+          <textarea matInput [field]="contactForm.message"></textarea>
+          @for (error of contactForm.message().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button matButton="filled" [disabled]="contactForm().invalid() || contactForm().submitting()" (click)="handleFormSubmitted()">
+        Send
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
