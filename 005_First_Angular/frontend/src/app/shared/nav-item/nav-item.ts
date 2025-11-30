@@ -18,6 +18,4 @@ import {MatIcon} from '@angular/material/icon';
 export class NavItem {
   public readonly iconName: InputSignal<string> = input.required<string>();
   public  readonly route: InputSignal<string> = input.required<string>();
-
-
 }

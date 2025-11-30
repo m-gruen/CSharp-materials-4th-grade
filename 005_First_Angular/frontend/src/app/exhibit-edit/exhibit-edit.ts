@@ -1,5 +1,15 @@
-import {ExhibitsService} from '../../core/services/exhibit-service';
-import {Component, inject, Signal, signal, WritableSignal} from '@angular/core';
+import {ExhibitDetails, ExhibitsService} from '../../core/services/exhibit-service';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {customError, Field, form, max, min, required, submit, validate} from '@angular/forms/signals';
 import {SnackbarService} from '../../core/services/snackbar-service';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
@@ -7,6 +17,8 @@ import {MatButton} from '@angular/material/button';
 import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {Router} from '@angular/router';
+import {LocalDate} from '@js-joda/core';
 
 @Component({
   selector: "app-exhibit-edit",
@@ -29,7 +41,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
   templateUrl: "./exhibit-edit.html",
   styleUrl: "./exhibit-edit.scss"
 })
-export class ExhibitEdit {
+export class ExhibitEdit implements OnInit {
   protected readonly MIN_YEAR: number = 1900;
   protected readonly MIN_CREW: number = 1;
   private readonly MAX_YEAR: number = new Date().getFullYear();
@@ -77,18 +89,88 @@ export class ExhibitEdit {
   });
   private readonly snackbar: SnackbarService = inject(SnackbarService);
   protected readonly imageUrl: Signal<string | null> = this.exhibitForm.imageUrl().value.asReadonly();
+  public readonly id = input<number | undefined, unknown>(undefined, {
+    transform: (raw) => {
+      if (raw == null) {
+        return undefined;
+      }
+      return numberAttribute(raw);
+    }
+  });
+  protected readonly editMode: Signal<boolean> = computed(() => {
+    const id: number | undefined = this.id();
+    return id != undefined && !isNaN(id) && id > 0;
+  });
+  private originallyAddedDate: LocalDate | undefined = undefined;
+  private readonly router: Router = inject(Router);
+
+  public async ngOnInit(): Promise<void> {
+    if (!this.editMode()) {
+      return;
+    }
+
+    const exhibitId = this.id();
+    if (exhibitId === undefined || isNaN(exhibitId)) {
+      this.snackbar.show("No exhibit ID provided for editing");
+      return;
+    }
+
+    const exhibitDetails = await this.service.getExhibit(exhibitId);
+    if (!exhibitDetails) {
+      this.snackbar.show("Failed to load exhibit for editing");
+      return;
+    }
+
+    this.exhibitFormModel.set({
+      name: exhibitDetails.name,
+      description: exhibitDetails.description,
+      serviceStartYear: exhibitDetails.serviceStartYear,
+      // NaN is a workaround until https://github.com/angular/angular/issues/65454 is fixed
+      serviceEndYear: exhibitDetails.serviceEndYear || NaN,
+      unitsProduced: exhibitDetails.unitsProduced,
+      country: exhibitDetails.country,
+      armor: exhibitDetails.armor,
+      armament: exhibitDetails.armament,
+      crew: exhibitDetails.crew,
+      imageUrl: exhibitDetails.imageUrl || ""
+    });
+
+    this.originallyAddedDate = exhibitDetails.addedToMuseumCollectionAt;
+  }
 
   public async handleFormSubmit(): Promise<void> {
     await submit(this.exhibitForm, async form => {
       const formValues = form().value();
-      ExhibitEdit.ensureOptionalFormValuesAreNull(formValues);
-      const result = await this.service.addExhibit(formValues);
-
-      if (!result) {
-        this.snackbar.show("Failed to add exhibit!");
+      let result: ExhibitDetails | undefined | boolean;
+      if (this.editMode()) {
+        if (!this.originallyAddedDate) {
+          this.snackbar.show("Cannot update exhibit, data missing");
+          return;
+        }
+        const payload: ExhibitDetails = {
+          id: this.id()!,
+          addedToMuseumCollectionAt: this.originallyAddedDate,
+          ...formValues
+        };
+        ExhibitEdit.ensureOptionalFormValuesAreNull(payload);
+        result = await this.service.updateExhibit(payload);
       } else {
-        this.snackbar.show("Exhibit added successfully!");
-        form().reset();
+        ExhibitEdit.ensureOptionalFormValuesAreNull(formValues);
+        result = await this.service.addExhibit(formValues);
+      }
+
+      const [presentVerb, pastVerb] = this.editMode()
+        ? ["update", "updated"]
+        : ["add", "added"];
+      if (!result) {
+        this.snackbar.show(`Failed to ${presentVerb} exhibit!`);
+      } else {
+        this.snackbar.show(`Exhibit ${pastVerb} successfully!`);
+        if (this.editMode()) {
+          await this.router.navigate(["/exhibits", this.id()]);
+        } else {
+          this.exhibitForm().reset();
+        }
       }
     });
   }

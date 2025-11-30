@@ -32,13 +32,15 @@
           {{ ex.description }}
         </p>
       </mat-card-content>
-        <mat-card-actions align="end">
-          <button mat-button (click)="handleBackBtnClick()">Back</button>
-          <button mat-icon-button [class.favorite]="isFavorite()"
-                  (click)="handleFavBtnClick()">
-            <mat-icon>favorite</mat-icon>
-          </button>
-        </mat-card-actions>
+      <mat-card-actions align="end">
+        <button mat-button (click)="handleBackBtnClick()">Back</button>
+        @if (authService.isLoggedIn()) {
+          <button mat-button (click)="handleEditBtnClick()">Edit</button>
+        }
+        <button mat-icon-button [class.favorite]="isFavorite()" (click)="handleFavBtnClick()">
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </mat-card-actions>
     </mat-card>
   }
 }

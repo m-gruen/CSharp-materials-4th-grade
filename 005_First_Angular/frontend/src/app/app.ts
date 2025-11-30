@@ -1,11 +1,11 @@
 import {Component, inject} from '@angular/core';
-import {MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
 import {AsyncPipe} from '@angular/common';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatListItem, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {firstValueFrom, map, Observable, shareReplay} from 'rxjs';
 import {NavItem} from './shared/nav-item/nav-item';
@@ -26,7 +26,9 @@ import {LoginDialog, LoginDialogResult} from './login-dialog/login-dialog';
     MatIconButton,
     MatIcon,
     RouterOutlet,
-    NavItem
+    NavItem,
+    MatListItem,
+    MatButton
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -50,14 +52,15 @@ export class App {
   protected readonly authService: AuthService = inject(AuthService);
   private readonly snackbar: SnackbarService = inject(SnackbarService);
   private readonly dialog: MatDialog = inject(MatDialog);
+  private readonly router: Router = inject(Router);
 
   protected async handleLogin(event: MouseEvent | undefined = undefined): Promise<void> {
     if (event) {
       event.preventDefault();
     }
     const dialogRef = this.dialog.open(LoginDialog);
-    const resultObserverable = dialogRef.afterClosed();
-    const result = await firstValueFrom(resultObserverable) as LoginDialogResult;
+    const resultObservables = dialogRef.afterClosed();
+    const result = await firstValueFrom(resultObservables) as LoginDialogResult;
 
     if (!result || !result.success) {
       if (!result.cancelled) {
@@ -68,4 +71,11 @@ export class App {
     this.snackbar.show('Successfully logged in!');
   }
 
+  public async handleLogout(event: MouseEvent | undefined = undefined): Promise<void> {
+    if (event){
+      event.preventDefault();
+    }
+    this.authService.logout();
+    await this.router.navigate(["/"]);
+  }
 }

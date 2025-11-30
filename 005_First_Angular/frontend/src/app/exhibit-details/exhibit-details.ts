@@ -26,6 +26,7 @@ import {ExhibitDetails, ExhibitsService} from '../../core/services/exhibit-servi
 import {Router} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
 import {FavoriteExhibitService} from '../../core/services/favorite-exhibit-service';
+import {AuthService} from '../../core/services/auth-service';
 
 @Component({
   selector: "app-exhibit-detail",
@@ -57,6 +58,7 @@ export class ExhibitDetail implements OnInit {
   private readonly router: Router = inject(Router);
   private readonly favoriteService: FavoriteExhibitService =
     inject(FavoriteExhibitService);
+  protected readonly authService: AuthService = inject(AuthService);
   protected readonly isFavorite: Signal<boolean> = computed(() => {
     const id: number = this.id();
     if (isNaN(id)) {
@@ -89,6 +91,14 @@ export class ExhibitDetail implements OnInit {
       return;
     }
     this.favoriteService.toggleFavorite(id);
+  }
+
+  public async handleEditBtnClick(): Promise<void> {
+    const id: number | undefined = this.id();
+    if (id == undefined) {
+      return;
+    }
+    await this.router.navigate(["/exhibit-edit/", id]);
   }
 
   protected readonly isNaN = isNaN;
