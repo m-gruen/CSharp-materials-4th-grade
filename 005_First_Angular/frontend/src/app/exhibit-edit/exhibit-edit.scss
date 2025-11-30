@@ -1,0 +1,31 @@
+.main-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-end;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.img-preview-container {
+  max-width: 30rem;
+}
+
+img {
+  width: 100%;
+}
+
+form {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+mat-form-field {
+  width: 100%;
+}

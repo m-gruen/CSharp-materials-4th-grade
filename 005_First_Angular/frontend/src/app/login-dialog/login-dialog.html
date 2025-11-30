@@ -1,0 +1,29 @@
+<div class="dialog-container">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput [field]="loginForm.username">
+          @for (error of loginForm.username().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [field]="loginForm.password" (keydown.enter)="handleLogin()">
+          @for (error of loginForm.password().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="cancel()" [disabled]="loginForm().submitting()">Cancel</button>
+      <button mat-button (click)="handleLogin()" [disabled]="loginForm().invalid() || loginForm().submitting()">Login</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

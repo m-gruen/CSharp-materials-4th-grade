@@ -1,0 +1,102 @@
+@if (exhibitForm().submitting()) {
+  <mat-progress-bar mode="indeterminate"/>
+}
+<div class="main-container">
+  <mat-card class="form-container" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        Add Exhibit
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput [field]="exhibitForm.name">
+          @for (error of exhibitForm.name().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea matInput [field]="exhibitForm.description"></textarea>
+          @for (error of exhibitForm.description().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Service Start Year</mat-label>
+          <input matInput type="number" [field]="exhibitForm.serviceStartYear">
+          @for (error of exhibitForm.serviceStartYear().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Service End Year</mat-label>
+          <input matInput type="number" [field]="exhibitForm.serviceEndYear">
+          @for (error of exhibitForm.serviceEndYear().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Units Produced</mat-label>
+          <input matInput type="number" [field]="exhibitForm.unitsProduced">
+          @for (error of exhibitForm.unitsProduced().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Country</mat-label>
+          <input matInput [field]="exhibitForm.country">
+          @for (error of exhibitForm.country().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Armor</mat-label>
+          <input matInput [field]="exhibitForm.armor">
+          @for (error of exhibitForm.armor().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Armament</mat-label>
+          <input matInput [field]="exhibitForm.armament">
+          @for (error of exhibitForm.armament().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Crew</mat-label>
+          <mat-select [field]="exhibitForm.crew">
+            @for (count of [1, 2, 3, 4, 5, 6]; track count) {
+              <mat-option [value]="count">{{ count }}</mat-option>
+            }
+          </mat-select>
+          @for (error of exhibitForm.crew().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Image URL</mat-label>
+          <input matInput [field]="exhibitForm.imageUrl">
+          @for (error of exhibitForm.imageUrl().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button [disabled]="exhibitForm().invalid() || exhibitForm().submitting()"
+              (click)="handleFormSubmit()">
+        Add
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <div class="img-preview-container">
+    @let imgUrl = imageUrl();
+    @if (imgUrl) {
+      <img [src]="imgUrl" alt="Tank Image Preview"/>
+    }
+  </div>
+</div>

@@ -1,0 +1,17 @@
+$spacing: 0.5rem;
+
+.dialog-container {
+  background-color: whitesmoke;
+  padding: calc($spacing / 2);
+}
+
+mat-card {
+  margin: $spacing;
+}
+
+form {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
