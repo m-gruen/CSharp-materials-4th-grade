@@ -1,28 +1,7 @@
-@if (loading()) {
+@defer (when loading() | negate) {
+  <app-exhibit-list-table
+    [exhibits]="exhibits()"
+    (onExhibitSelected)="handleRowClicked($event)" />
+} @placeholder (minimum 1s) {
   <mat-progress-bar mode="indeterminate"/>
-} @else {
-  <table mat-table [dataSource]="exhibits()">
-    <!--- Note that these column defs can be in any order, actual order is defined by displayedColumns -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name</th>
-      <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
-    </ng-container>
-    <ng-container matColumnDef="serviceStartYear">
-      <th mat-header-cell *matHeaderCellDef> Service Start Year</th>
-      <td mat-cell *matCellDef="let element"> {{ element.serviceStartYear }}</td>
-    </ng-container>
-    <ng-container matColumnDef="serviceEndYear">
-      <th mat-header-cell *matHeaderCellDef> Service End Year</th>
-      <td mat-cell *matCellDef="let element">
-        @let text = element.serviceEndYear == null ? 'still in use' : element.serviceEndYear;
-        {{ text }}
-      </td>
-    </ng-container>
-
-    <!-- this is a good thing to put into the cheatsheet -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-        matTooltip="Click for details" matTooltipPosition="right"
-        (click)="handleRowClicked(row)"></tr>
-  </table>
 }
