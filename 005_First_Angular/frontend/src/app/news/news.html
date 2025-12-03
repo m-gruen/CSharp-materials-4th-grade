@@ -15,19 +15,29 @@
 <button mat-button (click)="textFilter.set('visitor')">Show visitor news</button>
 <div class="news-container">
   @for (newsItem of displayItems(); track newsItem) {
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>
-          {{ newsItem.title }}
-          @if (newsItem.referencesFavorite) {
-            <mat-icon class="favorite">favorite</mat-icon>
-          }
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="news-content">
-        <p>{{ newsItem.content }}</p>
-        <span>Published: {{ newsItem.publishedAt.toString() | date:dateFormat }}</span>
-      </mat-card-content>
-    </mat-card>
+    @for(i of [1,2,3,4,5,6]; track $index) {
+      @defer (on viewport) {
+        @defer (on timer(1s)) {
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>
+                {{ newsItem.title }}
+                @if (newsItem.referencesFavorite) {
+                  <mat-icon class="favorite">favorite</mat-icon>
+                }
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="news-content">
+              <p>{{ newsItem.content }}</p>
+              <span>Published: {{ newsItem.publishedAt.toString() | date:dateFormat }}</span>
+            </mat-card-content>
+          </mat-card>
+        } @placeholder {
+          <span>On timer</span>
+        }
+      } @placeholder (minimum 1000) {
+        <p class="giant-placeholder">Placeholder for news shown for an absurd long time</p>
+      }
+    }
   }
 </div>
