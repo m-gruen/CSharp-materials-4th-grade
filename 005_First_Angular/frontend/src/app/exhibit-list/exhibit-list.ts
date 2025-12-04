@@ -1,35 +1,16 @@
 import { Component, computed, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable
-} from '@angular/material/table';
+import { Router } from '@angular/router';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatTooltip } from '@angular/material/tooltip';
 import { ExhibitInfo, ExhibitsService } from '../../core/services/exhibit-service';
 import {ExhibitListTable} from './exhibit-list-table/exhibit-list-table';
+import {NegatePipe} from '../../core/util/negate-pipe';
 
 @Component({
   selector: "app-exhibit-list",
   imports: [
-    MatTable,
-    MatHeaderCell,
-    MatColumnDef,
-    MatCell,
-    MatCellDef,
-    MatHeaderCellDef,
-    MatHeaderRow,
-    MatRow,
-    MatRowDef,
-    MatHeaderRowDef,
     MatProgressBar,
-    MatTooltip,
-    ExhibitListTable
+    ExhibitListTable,
+    NegatePipe
   ],
   templateUrl: "./exhibit-list.html",
   styleUrl: "./exhibit-list.scss"
