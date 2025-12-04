@@ -1,3 +1,27 @@
 .mat-mdc-row:hover {
   background-color: rgba(64, 64, 64, 0.4);
 }
+
+tr.detail-row {
+  height: 0;
+}
+
+.detail {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 0;
+  min-height: 0;
+  transition: height 225ms cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  &.expanded {
+    height: 3rem;
+  }
+}
+
+tr:nth-child(odd):not(:nth-last-child(2)) td {
+  border-bottom-width: 0;
+}

@@ -1,10 +1,10 @@
 <div class="container">
   <mat-form-field>
     <mat-label>Filter Exhibits</mat-label>
-    <input matInput (input)="handleNameFilterChanged($event)" />
+    <input matInput (input)="handleNameFilterChanged($event)"/>
   </mat-form-field>
 
-  <table mat-table [dataSource]="exhibitData()" matSort>
+  <table mat-table [dataSource]="exhibitData()" matSort multiTemplateDataRows>
     <!--- Note that these column defs can be in any order, actual order is defined by displayedColumns -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name</th>
@@ -21,9 +21,26 @@
         {{ text }}
       </td>
     </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="detail" [class.expanded]="expandedElements().has(element.id)">
+          Here is a details row for the {{ element.name }}!
+          And if you want the real details page click here:
+          <button matButton (click)="handleDetailsRequested(element)">Details</button>
+        </div>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
         matTooltip="Click for details" matTooltipPosition="right"
         (click)="handleRowClicked(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
+        class="detail-row"></tr>
   </table>
+
+  <mat-paginator [pageSizeOptions]="[5,10,20]"
+                 showFirstLastButtons
+                 aria-label="Select page of cool tanks"
+  />
 </div>

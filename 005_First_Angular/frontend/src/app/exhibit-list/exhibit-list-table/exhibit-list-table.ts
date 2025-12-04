@@ -22,6 +22,8 @@ import {
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-exhibit-list-table',
@@ -41,7 +43,9 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
     MatSortHeader,
     MatFormField,
     MatLabel,
-    MatInput
+    MatInput,
+    MatPaginator,
+    MatButton
   ],
   templateUrl: './exhibit-list-table.html',
   styleUrl: './exhibit-list-table.scss',
@@ -50,8 +54,9 @@ export class ExhibitListTable {
   public exhibits: InputSignal<ExhibitInfo[]> = input.required();
   public onExhibitSelected: OutputEmitterRef<ExhibitInfo> = output();
   private readonly sort: Signal<MatSort> = viewChild.required(MatSort);
-  private readonly filter: WritableSignal<string> = signal('');
+  private readonly paginator: Signal<MatPaginator> = viewChild.required(MatPaginator);
   protected readonly displayedColumns: string[] = ["name", "serviceStartYear", "serviceEndYear"];
+  protected readonly expandedElements: WritableSignal<Set<number>> = signal(new Set<number>());
   protected readonly exhibitData: Signal<MatTableDataSource<ExhibitInfo>> = computed(() => {
     const src = new MatTableDataSource(this.exhibits());
     src.sort = this.sort();
@@ -61,6 +66,7 @@ export class ExhibitListTable {
       }
       return data.name.toLowerCase().includes(filter);
     });
+    src.paginator = this.paginator();
     return src;
   });
 
@@ -75,6 +81,17 @@ export class ExhibitListTable {
   }
 
   public handleRowClicked(exhibit: ExhibitInfo): void {
+    this.expandedElements.update(set => {
+      if (set.has(exhibit.id)) {
+        set.delete(exhibit.id);
+      } else {
+        set.add(exhibit.id);
+      }
+      return new Set<number>(set);
+    });
+  }
+
+  public handleDetailsRequested(exhibit: ExhibitInfo): void {
     this.onExhibitSelected.emit(exhibit);
   }
 }

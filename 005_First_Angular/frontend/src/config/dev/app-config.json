@@ -1,0 +1,4 @@
+{
+  "backendBaseUrl": "https://prod.api.example.com",
+  "logLevel": "information"
+}
