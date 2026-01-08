@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EfDemo.Test/EfDemo.Test.csproj" />
+  <Project Path="EfDemo/EfDemo.csproj" />
+</Solution>
