@@ -19,3 +19,6 @@
 [submodule "009_Christmas_Assignment"]
 	path = 009_Christmas_Assignment
 	url = git@github.com:2526-4ahif-pose/ex-linq-02-christmas-m-gruen.git
+[submodule "011_EF_Musicals"]
+	path = 011_EF_Musicals
+	url = git@github.com:2526-4ahif-pose/ex-ef-01-musicals-m-gruen.git
