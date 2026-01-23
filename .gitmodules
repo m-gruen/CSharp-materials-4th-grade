@@ -22,3 +22,6 @@
 [submodule "011_EF_Musicals"]
 	path = 011_EF_Musicals
 	url = git@github.com:2526-4ahif-pose/ex-ef-01-musicals-m-gruen.git
+[submodule "012_EF_Chess"]
+	path = 012_EF_Chess
+	url = git@github.com:2526-4ahif-pose/ex-ef-02-chess-m-gruen.git
