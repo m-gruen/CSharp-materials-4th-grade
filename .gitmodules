@@ -25,3 +25,6 @@
 [submodule "012_EF_Chess"]
 	path = 012_EF_Chess
 	url = git@github.com:2526-4ahif-pose/ex-ef-02-chess-m-gruen.git
+[submodule "013_EF_Library"]
+	path = 013_EF_Library
+	url = git@github.com:2526-4ahif-pose/ex-ef-03-library-m-gruen.git
