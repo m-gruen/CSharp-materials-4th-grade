@@ -28,3 +28,6 @@
 [submodule "013_EF_Library"]
 	path = 013_EF_Library
 	url = git@github.com:2526-4ahif-pose/ex-ef-03-library-m-gruen.git
+[submodule "014_Parallel_Fun"]
+	path = 014_Parallel_Fun
+	url = git@github.com:2526-4ahif-pose/ex-ef-04-parallel-fun-m-gruen.git
