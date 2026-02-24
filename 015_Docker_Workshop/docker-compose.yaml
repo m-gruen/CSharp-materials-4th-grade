@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./alpaka-api
+    image: ghcr.io/m-gruen/alpaka-api:latest
+    environment:
+      ALPAKA_API_NAME: "Alpaka API via Docker Compose"
+    expose:
+      - "8081"
+    networks:
+      - workshop
+
+  frontend:
+    build:
+      context: ./alpaka-web
+    image: alpaka-web:local
+    depends_on:
+      - backend
+    expose:
+      - "80"
+    networks:
+      - workshop
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    depends_on:
+      - frontend
+    ports:
+      - "8081:80"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - workshop
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  workshop:
+    driver: bridge

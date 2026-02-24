@@ -1,0 +1,27 @@
+﻿@backendHost = http://localhost:8081
+
+### Health / service info
+GET {{backendHost}}/
+
+### Get all alpaka from the herd
+GET {{backendHost}}/api/alpakas
+
+### Get one alpaka by ID
+GET {{backendHost}}/api/alpakas/2
+
+### Add a new alpaka
+# @name alpakaCreation
+POST {{backendHost}}/api/alpakas
+Content-Type: application/json
+
+{
+    "name": "Nora",
+    "age": 3,
+    "color": "Caramel"
+}
+
+###
+@alpakaId = {{alpakaCreation.response.body.id}}
+
+### Verify the just-created alpaka
+GET {{backendHost}}/api/alpakas/{{alpakaId}}

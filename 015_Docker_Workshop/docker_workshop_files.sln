@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "alpaka-api", "alpaka-api", "{A6117E48-56C7-7928-9557-15D6483CACFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpaka.Api", "alpaka-api\Alpaka.Api.csproj", "{49723095-D967-7B49-F886-9576754281BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49723095-D967-7B49-F886-9576754281BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49723095-D967-7B49-F886-9576754281BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49723095-D967-7B49-F886-9576754281BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49723095-D967-7B49-F886-9576754281BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{49723095-D967-7B49-F886-9576754281BF} = {A6117E48-56C7-7928-9557-15D6483CACFF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {888352AB-0A5A-467B-81A3-A6C9FAAC2B20}
+	EndGlobalSection
+EndGlobal
