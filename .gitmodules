@@ -31,3 +31,6 @@
 [submodule "014_Parallel_Fun"]
 	path = 014_Parallel_Fun
 	url = git@github.com:2526-4ahif-pose/ex-ef-04-parallel-fun-m-gruen.git
+[submodule "016_Movies"]
+	path = 016_Movies
+	url = git@github.com:2526-4ahif-pose/ex-api-01-movies-m-gruen.git
