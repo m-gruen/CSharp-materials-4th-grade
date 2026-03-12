@@ -37,3 +37,6 @@
 [submodule "017_Sudoku"]
 	path = 017_Sudoku
 	url = git@github.com:2526-4ahif-pose/ex-api-02-sudoku-m-gruen.git
+[submodule "018_Flights"]
+	path = 018_Flights
+	url = git@github.com:2526-4ahif-pose/ex-api-03-flights-m-gruen.git
