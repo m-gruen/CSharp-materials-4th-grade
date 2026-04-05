@@ -40,3 +40,6 @@
 [submodule "018_Flights"]
 	path = 018_Flights
 	url = git@github.com:2526-4ahif-pose/ex-api-03-flights-m-gruen.git
+[submodule "019_Effort_Tracking"]
+	path = 019_Effort_Tracking
+	url = git@github.com:2526-4ahif-pose/ex-api-04-effort-tracking-m-gruen.git
