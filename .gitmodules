@@ -49,3 +49,6 @@
 [submodule "021_GenericFun"]
 	path = 021_GenericFun
 	url = git@github.com:2526-4ahif-pose/extra-generic-fun-m-gruen.git
+[submodule "022_Sudoku_2"]
+	path = 022_Sudoku_2
+	url = git@github.com:2526-4ahif-pose/ex-fs-01-sudoku-m-gruen.git
