@@ -46,3 +46,6 @@
 [submodule "020_Taster_Days"]
 	path = 020_Taster_Days
 	url = git@github.com:2526-4ahif-pose/ex-api-05-taster-days-m-gruen.git
+[submodule "021_GenericFun"]
+	path = 021_GenericFun
+	url = git@github.com:2526-4ahif-pose/extra-generic-fun-m-gruen.git
