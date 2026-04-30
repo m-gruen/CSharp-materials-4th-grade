@@ -55,3 +55,6 @@
 [submodule "023_Telegraph"]
 	path = 023_Telegraph
 	url = git@github.com:2526-4ahif-pose/ex-fs-02-telegraph-m-gruen.git
+[submodule "024_World_Clock"]
+	path = 024_World_Clock
+	url = git@github.com:2526-4ahif-pose/ex-fs-03-worldclock-m-gruen.git
