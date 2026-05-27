@@ -61,3 +61,6 @@
 [submodule "025_Lunch_Orders"]
 	path = 025_Lunch_Orders
 	url = git@github.com:2526-4ahif-pose/ex-fs-04-lunchorders-m-gruen.git
+[submodule "026_Micro_Project"]
+	path = 026_Micro_Project
+	url = git@github.com:2526-4ahif-pose/ex-fs-05-microproject-cocacola-fanta-sprite.git
