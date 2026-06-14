@@ -22,9 +22,13 @@ public static class OrderJoins
         ArgumentNullException.ThrowIfNull(orders);
         ArgumentNullException.ThrowIfNull(customers);
 
-        // TODO: for each order, search `customers` for the one whose Id == order.CustomerId.
-        //       Produce a new EnrichedOrder(order.Id, customer?.Name ?? UnknownCustomer, order.Amount).
-        throw new NotImplementedException();
+        return orders
+            .Select(order =>
+            {
+                var customer = customers.FirstOrDefault(c => c.Id == order.CustomerId);
+                return new EnrichedOrder(order.Id, customer?.Name ?? UnknownCustomer, order.Amount);
+            })
+            .ToList();
     }
 
     /// <summary>
@@ -38,10 +42,13 @@ public static class OrderJoins
         ArgumentNullException.ThrowIfNull(orders);
         ArgumentNullException.ThrowIfNull(customers);
 
-        // TODO: build customersById = customers.ToDictionary(c => c.Id) ONCE, then map each order
-        //       to EnrichedOrder(order.Id, customersById.GetValueOrDefault(order.CustomerId)?.Name
-        //       ?? UnknownCustomer, order.Amount). The result must equal JoinWithNestedLoop's.
-        throw new NotImplementedException();
+        var customersById = customers.ToDictionary(c => c.Id);
+        return orders
+            .Select(order => new EnrichedOrder(
+                order.Id,
+                customersById.GetValueOrDefault(order.CustomerId)?.Name ?? UnknownCustomer,
+                order.Amount))
+            .ToList();
     }
 
     /// <summary>
@@ -52,8 +59,7 @@ public static class OrderJoins
     {
         ArgumentNullException.ThrowIfNull(orders);
 
-        // TODO: orders.GroupBy(o => o.CustomerId).ToDictionary(g => g.Key, g => g.ToList())
-        throw new NotImplementedException();
+        return orders.GroupBy(o => o.CustomerId).ToDictionary(g => g.Key, g => g.ToList());
     }
 
     /// <summary>Aggregation per key: the total order amount for each customer.</summary>
@@ -61,7 +67,6 @@ public static class OrderJoins
     {
         ArgumentNullException.ThrowIfNull(orders);
 
-        // TODO: orders.GroupBy(o => o.CustomerId).ToDictionary(g => g.Key, g => g.Sum(o => o.Amount))
-        throw new NotImplementedException();
+        return orders.GroupBy(o => o.CustomerId).ToDictionary(g => g.Key, g => g.Sum(o => o.Amount));
     }
 }
