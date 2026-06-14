@@ -14,9 +14,26 @@ public static class WordFrequencyCounter
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        // TODO: walk the characters; collect runs of letters (use char.IsLetter) into
-        //       words, lower-cased with char.ToLowerInvariant. "Hello, HELLO" -> ["hello","hello"].
-        throw new NotImplementedException();
+        var words = new List<string>();
+        var current = new System.Text.StringBuilder();
+
+        foreach (char c in text)
+        {
+            if (char.IsLetter(c))
+            {
+                current.Append(char.ToLowerInvariant(c));
+            }
+            else if (current.Length > 0)
+            {
+                words.Add(current.ToString());
+                current.Clear();
+            }
+        }
+
+        if (current.Length > 0)
+            words.Add(current.ToString());
+
+        return words;
     }
 
     /// <summary>Beginner style: <c>ContainsKey</c> then the indexer (looks the key up twice).</summary>
@@ -24,8 +41,15 @@ public static class WordFrequencyCounter
     {
         ArgumentNullException.ThrowIfNull(words);
 
-        // TODO: for each word, if counts.ContainsKey(word) then counts[word]++ else counts[word] = 1.
-        throw new NotImplementedException();
+        var counts = new Dictionary<string, int>();
+        foreach (var word in words)
+        {
+            if (counts.ContainsKey(word))
+                counts[word]++;
+            else
+                counts[word] = 1;
+        }
+        return counts;
     }
 
     /// <summary><c>TryGetValue</c> gives the current count (0 when missing) in a single lookup.</summary>
@@ -33,8 +57,13 @@ public static class WordFrequencyCounter
     {
         ArgumentNullException.ThrowIfNull(words);
 
-        // TODO: for each word, counts.TryGetValue(word, out int current); counts[word] = current + 1;
-        throw new NotImplementedException();
+        var counts = new Dictionary<string, int>();
+        foreach (var word in words)
+        {
+            counts.TryGetValue(word, out int current);
+            counts[word] = current + 1;
+        }
+        return counts;
     }
 
     /// <summary>The most compact imperative form, using <c>GetValueOrDefault</c>.</summary>
@@ -42,8 +71,12 @@ public static class WordFrequencyCounter
     {
         ArgumentNullException.ThrowIfNull(words);
 
-        // TODO: for each word, counts[word] = counts.GetValueOrDefault(word) + 1;
-        throw new NotImplementedException();
+        var counts = new Dictionary<string, int>();
+        foreach (var word in words)
+        {
+            counts[word] = counts.GetValueOrDefault(word) + 1;
+        }
+        return counts;
     }
 
     /// <summary>The declarative LINQ form (the same shape you use against Entity Framework).</summary>
@@ -51,8 +84,7 @@ public static class WordFrequencyCounter
     {
         ArgumentNullException.ThrowIfNull(words);
 
-        // TODO: words.GroupBy(word => word).ToDictionary(group => group.Key, group => group.Count())
-        throw new NotImplementedException();
+        return words.GroupBy(word => word).ToDictionary(group => group.Key, group => group.Count());
     }
 
     /// <summary>Records the position at which each word was <em>first</em> seen, using <c>TryAdd</c>.</summary>
@@ -60,9 +92,14 @@ public static class WordFrequencyCounter
     {
         ArgumentNullException.ThrowIfNull(words);
 
-        // TODO: keep a running position counter; for each word call firstSeen.TryAdd(word, position).
-        //       TryAdd stores only when the key is new, so later repeats are ignored.
-        throw new NotImplementedException();
+        var firstSeen = new Dictionary<string, int>();
+        int position = 0;
+        foreach (var word in words)
+        {
+            firstSeen.TryAdd(word, position);
+            position++;
+        }
+        return firstSeen;
     }
 
     /// <summary>The <paramref name="count"/> most frequent words, ties broken alphabetically.</summary>
@@ -73,8 +110,10 @@ public static class WordFrequencyCounter
         ArgumentNullException.ThrowIfNull(counts);
         ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-        // TODO: order by value descending, then by key (StringComparer.Ordinal) for ties,
-        //       then Take(count) and materialise to a list.
-        throw new NotImplementedException();
+        return counts
+            .OrderByDescending(kv => kv.Value)
+            .ThenBy(kv => kv.Key, StringComparer.Ordinal)
+            .Take(count)
+            .ToList();
     }
 }
