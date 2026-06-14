@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MapToSuccess/MapToSuccess.csproj" />
+  <Project Path="MapToSuccess.Test/MapToSuccess.Test.csproj" />
+</Solution>
