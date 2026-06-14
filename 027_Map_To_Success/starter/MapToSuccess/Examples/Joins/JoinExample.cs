@@ -1,4 +1,4 @@
-namespace MapToSuccess.Examples.Joins;
+﻿namespace MapToSuccess.Examples.Joins;
 
 using Spectre.Console;
 
@@ -10,14 +10,14 @@ using Spectre.Console;
 /// </summary>
 public sealed class JoinExample : IExample
 {
-    private static readonly IReadOnlyList<Customer> _sampleCustomers =
+    private static readonly IReadOnlyList<Customer> sample_Customers =
     [
         new Customer(1, "Alice"),
         new Customer(2, "Bob"),
         new Customer(3, "Carol"),
     ];
 
-    private static readonly IReadOnlyList<Order> _sampleOrders =
+    private static readonly IReadOnlyList<Order> sample_Orders =
     [
         new Order(101, CustomerId: 1, Amount: 50.00m),
         new Order(102, CustomerId: 2, Amount: 20.00m),
@@ -33,8 +33,8 @@ public sealed class JoinExample : IExample
 
     public void Run(IAnsiConsole console)
     {
-        IReadOnlyList<EnrichedOrder> viaLoop = OrderJoins.JoinWithNestedLoop(_sampleOrders, _sampleCustomers);
-        IReadOnlyList<EnrichedOrder> viaDictionary = OrderJoins.JoinWithDictionary(_sampleOrders, _sampleCustomers);
+        IReadOnlyList<EnrichedOrder> viaLoop = OrderJoins.JoinWithNestedLoop(sample_Orders, sample_Customers);
+        IReadOnlyList<EnrichedOrder> viaDictionary = OrderJoins.JoinWithDictionary(sample_Orders, sample_Customers);
 
         console.MarkupLine("[bold]Orders enriched with their customer's name[/] (both joins agree):");
         Table joined = new Table()
@@ -54,8 +54,8 @@ public sealed class JoinExample : IExample
 
         RenderAgreement(console, viaLoop.SequenceEqual(viaDictionary));
 
-        int nestedWorstCase = _sampleOrders.Count * _sampleCustomers.Count;
-        int indexedWork = _sampleOrders.Count + _sampleCustomers.Count;
+        int nestedWorstCase = sample_Orders.Count * sample_Customers.Count;
+        int indexedWork = sample_Orders.Count + sample_Customers.Count;
         console.MarkupLine(
             $"[bold]Work:[/] nested loop does up to [red]{nestedWorstCase}[/] comparisons "
             + $"(orders × customers), the index does about [green]{indexedWork}[/] (orders + customers). "
@@ -73,8 +73,8 @@ public sealed class JoinExample : IExample
 
     private static void RenderGrouping(IAnsiConsole console)
     {
-        Dictionary<int, List<Order>> ordersByCustomer = OrderJoins.GroupOrdersByCustomer(_sampleOrders);
-        Dictionary<int, decimal> totalByCustomer = OrderJoins.TotalAmountByCustomer(_sampleOrders);
+        Dictionary<int, List<Order>> ordersByCustomer = OrderJoins.GroupOrdersByCustomer(sample_Orders);
+        Dictionary<int, decimal> totalByCustomer = OrderJoins.TotalAmountByCustomer(sample_Orders);
 
         Table table = new Table()
             .Border(TableBorder.Rounded)

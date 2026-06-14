@@ -1,4 +1,4 @@
-namespace MapToSuccess.Examples.MiniDictionary;
+﻿namespace MapToSuccess.Examples.MiniDictionary;
 
 /// <summary>
 /// A deliberately small, readable hash map you implement yourself. It uses
@@ -55,7 +55,12 @@ public sealed class MiniDictionary<TKey, TValue>
         get
         {
             if (!TryGetValue(key, out TValue value))
+            {
+
                 throw new KeyNotFoundException($"The key '{key}' was not found.");
+            }
+
+
             return value;
         }
 
@@ -79,10 +84,17 @@ public sealed class MiniDictionary<TKey, TValue>
     public void Add(TKey key, TValue value)
     {
         if (ContainsKey(key))
+        {
+
             throw new ArgumentException($"An item with the key '{key}' already exists.", nameof(key));
+        }
+
 
         if ((Count + 1) > _buckets.Length * 0.75)
+        {
             Grow();
+        }
+
 
         _buckets[GetBucketIndex(key)].Add(new Entry(key, value));
         Count++;
@@ -113,7 +125,12 @@ public sealed class MiniDictionary<TKey, TValue>
         var bucket = _buckets[GetBucketIndex(key)];
         var entry = bucket.FirstOrDefault(e => e.Key.Equals(key));
         if (entry is null)
+        {
+
             return false;
+        }
+
+
         bucket.Remove(entry);
         Count--;
         return true;

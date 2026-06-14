@@ -1,4 +1,4 @@
-namespace MapToSuccess.Examples.Keys;
+﻿namespace MapToSuccess.Examples.Keys;
 
 using NodaTime;
 
@@ -17,8 +17,10 @@ public static class KeyDemonstrations
     /// </summary>
     public static bool ValueKeyFindsFreshInstance()
     {
-        var places = new Dictionary<Coordinate, string>();
-        places[new Coordinate(48, 16)] = "Vienna";
+        var places = new Dictionary<Coordinate, string>
+        {
+            [new Coordinate(48, 16)] = "Vienna"
+        };
         return places.ContainsKey(new Coordinate(48, 16));
     }
 
@@ -26,8 +28,10 @@ public static class KeyDemonstrations
     public static bool ReferenceKeyFindsSameInstance()
     {
         var key = new ReferenceKey(1);
-        var map = new Dictionary<ReferenceKey, string>();
-        map[key] = "value";
+        var map = new Dictionary<ReferenceKey, string>
+        {
+            [key] = "value"
+        };
         return map.ContainsKey(key);
     }
 
@@ -37,8 +41,10 @@ public static class KeyDemonstrations
     /// </summary>
     public static bool ReferenceKeyMissesFreshInstance()
     {
-        var map = new Dictionary<ReferenceKey, string>();
-        map[new ReferenceKey(1)] = "value";
+        var map = new Dictionary<ReferenceKey, string>
+        {
+            [new ReferenceKey(1)] = "value"
+        };
         return !map.ContainsKey(new ReferenceKey(1));
     }
 
@@ -49,8 +55,10 @@ public static class KeyDemonstrations
     public static bool MutatedKeyEntryIsLost()
     {
         var key = new MutableKey { Id = 1 };
-        var map = new Dictionary<MutableKey, string>();
-        map[key] = "value";
+        var map = new Dictionary<MutableKey, string>
+        {
+            [key] = "value"
+        };
         key.Id = 2;
         return !map.ContainsKey(key);
     }
@@ -59,8 +67,10 @@ public static class KeyDemonstrations
     public static bool MutatedEntryIsLostToOriginalValueToo()
     {
         var key = new MutableKey { Id = 1 };
-        var map = new Dictionary<MutableKey, string>();
-        map[key] = "value";
+        var map = new Dictionary<MutableKey, string>
+        {
+            [key] = "value"
+        };
         key.Id = 2;
         return !map.ContainsKey(new MutableKey { Id = 1 });
     }
@@ -68,16 +78,20 @@ public static class KeyDemonstrations
     /// <summary>With <see cref="StringComparer.OrdinalIgnoreCase"/>, "vienna" finds "Vienna".</summary>
     public static bool OrdinalIgnoreCaseFinds()
     {
-        var dict = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-        dict["Vienna"] = 1;
+        var dict = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Vienna"] = 1
+        };
         return dict.ContainsKey("vienna");
     }
 
     /// <summary>The default (ordinal) comparer treats "vienna" and "Vienna" as different keys.</summary>
     public static bool DefaultComparerMisses()
     {
-        var dict = new Dictionary<string, int>();
-        dict["Vienna"] = 1;
+        var dict = new Dictionary<string, int>
+        {
+            ["Vienna"] = 1
+        };
         return !dict.ContainsKey("vienna");
     }
 

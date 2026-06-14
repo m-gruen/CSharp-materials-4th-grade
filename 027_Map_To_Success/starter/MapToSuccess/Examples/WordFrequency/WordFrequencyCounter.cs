@@ -1,4 +1,4 @@
-namespace MapToSuccess.Examples.WordFrequency;
+﻿namespace MapToSuccess.Examples.WordFrequency;
 
 /// <summary>
 /// Counting how often each word appears is the classic "what is a dictionary for"
@@ -31,7 +31,9 @@ public static class WordFrequencyCounter
         }
 
         if (current.Length > 0)
+        {
             words.Add(current.ToString());
+        }
 
         return words;
     }
@@ -42,12 +44,16 @@ public static class WordFrequencyCounter
         ArgumentNullException.ThrowIfNull(words);
 
         var counts = new Dictionary<string, int>();
-        foreach (var word in words)
+        foreach (string word in words)
         {
-            if (counts.ContainsKey(word))
-                counts[word]++;
+            if (counts.TryGetValue(word, out int value))
+            {
+                counts[word] = ++value;
+            }
             else
+            {
                 counts[word] = 1;
+            }
         }
         return counts;
     }
@@ -58,7 +64,7 @@ public static class WordFrequencyCounter
         ArgumentNullException.ThrowIfNull(words);
 
         var counts = new Dictionary<string, int>();
-        foreach (var word in words)
+        foreach (string word in words)
         {
             counts.TryGetValue(word, out int current);
             counts[word] = current + 1;
@@ -72,7 +78,7 @@ public static class WordFrequencyCounter
         ArgumentNullException.ThrowIfNull(words);
 
         var counts = new Dictionary<string, int>();
-        foreach (var word in words)
+        foreach (string word in words)
         {
             counts[word] = counts.GetValueOrDefault(word) + 1;
         }
@@ -94,7 +100,7 @@ public static class WordFrequencyCounter
 
         var firstSeen = new Dictionary<string, int>();
         int position = 0;
-        foreach (var word in words)
+        foreach (string word in words)
         {
             firstSeen.TryAdd(word, position);
             position++;
@@ -110,10 +116,9 @@ public static class WordFrequencyCounter
         ArgumentNullException.ThrowIfNull(counts);
         ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-        return counts
+        return [.. counts
             .OrderByDescending(kv => kv.Value)
             .ThenBy(kv => kv.Key, StringComparer.Ordinal)
-            .Take(count)
-            .ToList();
+            .Take(count)];
     }
 }

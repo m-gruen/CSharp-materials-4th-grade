@@ -1,4 +1,4 @@
-namespace MapToSuccess.Examples.Memoization;
+﻿namespace MapToSuccess.Examples.Memoization;
 
 using System.Diagnostics;
 using Spectre.Console;
@@ -12,7 +12,7 @@ using Spectre.Console;
 public sealed class MemoizationExample : IExample
 {
     // The queries deliberately repeat: 24 of the 30 lookups ask for a key seen before.
-    private static readonly int[] _queries =
+    private static readonly int[] queries =
         [.. Enumerable.Range(0, 30).Select(i => 1 + (i % 6))];
 
     public string Title => "Caching results (memoization)";
@@ -22,14 +22,14 @@ public sealed class MemoizationExample : IExample
     public void Run(IAnsiConsole console)
     {
         console.MarkupLine(
-            $"Answering [yellow]{_queries.Length}[/] requests for [yellow]{_queries.Distinct().Count()}[/] distinct keys, "
+            $"Answering [yellow]{queries.Length}[/] requests for [yellow]{queries.Distinct().Count()}[/] distinct keys, "
             + "where each fresh computation is expensive.");
 
         int naiveComputations = 0;
         Stopwatch naiveTimer = Stopwatch.StartNew();
         long[] naiveResults =
         [
-            .. _queries.Select(key =>
+            .. queries.Select(key =>
             {
                 naiveComputations++;
                 return Expensive(key);
@@ -44,7 +44,7 @@ public sealed class MemoizationExample : IExample
             return Expensive(key);
         });
         Stopwatch memoTimer = Stopwatch.StartNew();
-        long[] memoResults = [.. _queries.Select(memoizer.Get)];
+        long[] memoResults = [.. queries.Select(memoizer.Get)];
         memoTimer.Stop();
 
         Table table = new Table()
@@ -56,12 +56,12 @@ public sealed class MemoizationExample : IExample
             .AddColumn("time", column => column.RightAligned());
         table.AddRow(
             "[red]No cache[/]",
-            _queries.Length.ToString(),
+            queries.Length.ToString(),
             naiveComputations.ToString(),
             $"{naiveTimer.Elapsed.TotalMilliseconds:N1} ms");
         table.AddRow(
             "[green]Memoized[/]",
-            _queries.Length.ToString(),
+            queries.Length.ToString(),
             memoComputations.ToString(),
             $"{memoTimer.Elapsed.TotalMilliseconds:N1} ms");
         console.Write(table);

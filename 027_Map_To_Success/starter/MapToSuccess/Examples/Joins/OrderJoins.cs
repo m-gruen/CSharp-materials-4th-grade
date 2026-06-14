@@ -1,4 +1,4 @@
-namespace MapToSuccess.Examples.Joins;
+﻿namespace MapToSuccess.Examples.Joins;
 
 /// <summary>
 /// Joining two in-memory collections is the second great use of a dictionary: it turns a
@@ -22,13 +22,12 @@ public static class OrderJoins
         ArgumentNullException.ThrowIfNull(orders);
         ArgumentNullException.ThrowIfNull(customers);
 
-        return orders
+        return [.. orders
             .Select(order =>
             {
                 var customer = customers.FirstOrDefault(c => c.Id == order.CustomerId);
                 return new EnrichedOrder(order.Id, customer?.Name ?? UnknownCustomer, order.Amount);
-            })
-            .ToList();
+            })];
     }
 
     /// <summary>
@@ -43,12 +42,11 @@ public static class OrderJoins
         ArgumentNullException.ThrowIfNull(customers);
 
         var customersById = customers.ToDictionary(c => c.Id);
-        return orders
+        return [.. orders
             .Select(order => new EnrichedOrder(
                 order.Id,
                 customersById.GetValueOrDefault(order.CustomerId)?.Name ?? UnknownCustomer,
-                order.Amount))
-            .ToList();
+                order.Amount))];
     }
 
     /// <summary>

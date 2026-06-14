@@ -9,7 +9,7 @@ public sealed class Memoizer<TKey, TResult>
     where TKey : notnull
 {
     private readonly Func<TKey, TResult> _compute;
-    private readonly Dictionary<TKey, TResult> _cache = new();
+    private readonly Dictionary<TKey, TResult> _cache = [];
 
     /// <summary>Wraps the expensive function whose results should be cached.</summary>
     public Memoizer(Func<TKey, TResult> compute)
