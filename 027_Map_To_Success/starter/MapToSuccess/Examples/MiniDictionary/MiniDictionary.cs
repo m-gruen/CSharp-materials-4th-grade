@@ -46,61 +46,77 @@ public sealed class MiniDictionary<TKey, TValue>
     public int GetBucketIndex(TKey key)
     {
         ArgumentNullException.ThrowIfNull(key);
-
-        // TODO: turn the key into a valid bucket index:
-        //   1. start from key.GetHashCode()
-        //   2. mask off the sign bit so it is never negative:  value & int.MaxValue
-        //      (a hash code can be negative, but an array index cannot)
-        //   3. wrap it into range:  % _buckets.Length
-        throw new NotImplementedException();
+        return (key.GetHashCode() & int.MaxValue) % _buckets.Length;
     }
 
     /// <summary>Gets or sets the value for <paramref name="key"/>.</summary>
     public TValue this[TKey key]
     {
-        // TODO (get): return the value for key. If it is missing, throw
-        //             new KeyNotFoundException(...). Hint: reuse TryGetValue.
-        get => throw new NotImplementedException();
+        get
+        {
+            if (!TryGetValue(key, out TValue value))
+                throw new KeyNotFoundException($"The key '{key}' was not found.");
+            return value;
+        }
 
-        // TODO (set): find the entry in the key's bucket. If it exists, overwrite its Value;
-        //             otherwise add a new Entry (and increase Count).
-        set => throw new NotImplementedException();
+        set
+        {
+            var bucket = _buckets[GetBucketIndex(key)];
+            var entry = bucket.FirstOrDefault(e => e.Key.Equals(key));
+            if (entry is not null)
+            {
+                entry.Value = value;
+            }
+            else
+            {
+                bucket.Add(new Entry(key, value));
+                Count++;
+            }
+        }
     }
 
     /// <summary>Adds a new pair. Throws if the key already exists.</summary>
     public void Add(TKey key, TValue value)
     {
-        // TODO:
-        //   - if the key already exists, throw
-        //       new ArgumentException($"...{key}...", nameof(key));
-        //   - otherwise grow the table first if adding one more pair would make it more
-        //     than ~75% full (see the Grow hint at the bottom), then add
-        //       new Entry(key, value)  to  _buckets[GetBucketIndex(key)]  and increase Count.
-        throw new NotImplementedException();
+        if (ContainsKey(key))
+            throw new ArgumentException($"An item with the key '{key}' already exists.", nameof(key));
+
+        if ((Count + 1) > _buckets.Length * 0.75)
+            Grow();
+
+        _buckets[GetBucketIndex(key)].Add(new Entry(key, value));
+        Count++;
     }
 
     /// <summary>Returns <c>true</c> and the value when the key is present.</summary>
     public bool TryGetValue(TKey key, out TValue value)
     {
-        // TODO: look ONLY inside _buckets[GetBucketIndex(key)]. If an entry's Key.Equals(key),
-        //       set value to that entry's Value and return true. Otherwise set
-        //       value = default! and return false.
-        throw new NotImplementedException();
+        var bucket = _buckets[GetBucketIndex(key)];
+        foreach (var entry in bucket)
+        {
+            if (entry.Key.Equals(key))
+            {
+                value = entry.Value;
+                return true;
+            }
+        }
+        value = default!;
+        return false;
     }
 
     /// <summary>Returns <c>true</c> when the key is present.</summary>
-    public bool ContainsKey(TKey key)
-    {
-        // TODO: return whether the key is present. Hint: you can reuse TryGetValue.
-        throw new NotImplementedException();
-    }
+    public bool ContainsKey(TKey key) => TryGetValue(key, out _);
 
     /// <summary>Removes the key. Returns <c>true</c> when something was removed.</summary>
     public bool Remove(TKey key)
     {
-        // TODO: in the key's bucket, find the entry whose Key.Equals(key); remove it,
-        //       decrease Count and return true. Return false if the key is not there.
-        throw new NotImplementedException();
+        var bucket = _buckets[GetBucketIndex(key)];
+        var entry = bucket.FirstOrDefault(e => e.Key.Equals(key));
+        if (entry is null)
+            return false;
+        bucket.Remove(entry);
+        Count--;
+        return true;
     }
 
     /// <summary>Snapshot of one bucket's chain, used by the visualiser and the tests.</summary>
@@ -109,6 +125,20 @@ public sealed class MiniDictionary<TKey, TValue>
         ArgumentOutOfRangeException.ThrowIfNegative(bucketIndex);
         ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(bucketIndex, _buckets.Length);
         return [.. _buckets[bucketIndex].Select(entry => new KeyValuePair<TKey, TValue>(entry.Key, entry.Value))];
+    }
+
+    private void Grow()
+    {
+        var newBuckets = CreateBuckets(_buckets.Length * 2);
+        foreach (var bucket in _buckets)
+        {
+            foreach (var entry in bucket)
+            {
+                int newIndex = (entry.Key.GetHashCode() & int.MaxValue) % newBuckets.Length;
+                newBuckets[newIndex].Add(entry);
+            }
+        }
+        _buckets = newBuckets;
     }
 
     // Provided helper: builds an array of empty buckets.
@@ -122,11 +152,4 @@ public sealed class MiniDictionary<TKey, TValue>
 
         return result;
     }
-
-    // GROW HINT (do this once your basic version passes its tests):
-    // Long chains make lookups slow, so the table should grow when it gets crowded.
-    // Add a private method that, when Count would pass ~75% of _buckets.Length, replaces
-    // `_buckets` with a bigger array (e.g. _buckets.Length * 2) and RE-INSERTS every existing
-    // entry — its bucket index changes because it depends on _buckets.Length. Call it from
-    // Add before inserting a brand-new key.
 }
