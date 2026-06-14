@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace MapToSuccess.Examples.RegistryLookup;
 
 /// <summary>
@@ -17,13 +19,21 @@ public static class LookupBenchmark
         ArgumentNullException.ThrowIfNull(registry);
         ArgumentNullException.ThrowIfNull(queryIds);
 
-        // TODO:
-        //   - start a Stopwatch
-        //   - for each id in queryIds, call registry.FindById(id); if it returns a person,
-        //     count a hit and add person.Id to a long checksum
-        //   - stop the stopwatch
-        //   - return new BenchmarkResult(strategy, queryIds.Count, hits, checksum, stopwatch.Elapsed)
-        // (The checksum lets tests prove two strategies returned the SAME results.)
-        throw new NotImplementedException();
+        var sw = Stopwatch.StartNew();
+        int hits = 0;
+        long checksum = 0;
+
+        foreach (int id in queryIds)
+        {
+            var person = registry.FindById(id);
+            if (person is not null)
+            {
+                hits++;
+                checksum += person.Id;
+            }
+        }
+
+        sw.Stop();
+        return new BenchmarkResult(strategy, queryIds.Count, hits, checksum, sw.Elapsed);
     }
 }
