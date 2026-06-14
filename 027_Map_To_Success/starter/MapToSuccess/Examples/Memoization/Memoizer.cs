@@ -35,15 +35,13 @@ public sealed class Memoizer<TKey, TResult>
     {
         if (_cache.TryGetValue(key, out TResult? cached))
         {
-            // Cache hit: we already computed this one.
             Hits++;
             return cached;
         }
 
-        // Cache miss: run the expensive function exactly once for this key...
         TResult value = _compute(key);
-
-        // TODO: ...then store value in the cache under key, count a Miss (Misses++), and return value.
-        throw new NotImplementedException();
+        _cache[key] = value;
+        Misses++;
+        return value;
     }
 }

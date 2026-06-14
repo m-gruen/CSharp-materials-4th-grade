@@ -93,7 +93,7 @@ public sealed class MemoizationExample : IExample
     {
         string factor = memoized.TotalMilliseconds <= 0
             ? "many times"
-            : $"{naive.TotalMilliseconds / memoized.TotalMilliseconds:N1}×";
+            : $"{(naive.TotalMilliseconds / memoized.TotalMilliseconds).ToString("N1", System.Globalization.CultureInfo.InvariantCulture)}×";
         return $"[bold]Caching made it about [green]{factor}[/] faster.[/]";
     }
 }
