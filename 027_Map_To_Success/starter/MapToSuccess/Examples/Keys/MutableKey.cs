@@ -11,19 +11,11 @@ public sealed class MutableKey : IEquatable<MutableKey>
 {
     public int Id { get; set; }
 
-    public bool Equals(MutableKey? other)
-    {
-        // TODO: equal when other is not null and Id matches.
-        throw new NotImplementedException();
-    }
+    public bool Equals(MutableKey? other) => other is not null && Id == other.Id;
 
     public override bool Equals(object? obj) => Equals(obj as MutableKey);
 
-    public override int GetHashCode()
-    {
-        // TODO: base the hash code on Id (e.g. Id.GetHashCode()).
-        throw new NotImplementedException();
-    }
+    public override int GetHashCode() => Id.GetHashCode();
 
     public override string ToString() => $"mutable:{Id}";
 }

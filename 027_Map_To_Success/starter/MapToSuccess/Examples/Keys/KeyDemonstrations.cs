@@ -17,17 +17,18 @@ public static class KeyDemonstrations
     /// </summary>
     public static bool ValueKeyFindsFreshInstance()
     {
-        // TODO: build a Dictionary<Coordinate,string>, add new Coordinate(48,16) -> "Vienna",
-        //       then return places.ContainsKey(new Coordinate(48, 16)).
-        throw new NotImplementedException();
+        var places = new Dictionary<Coordinate, string>();
+        places[new Coordinate(48, 16)] = "Vienna";
+        return places.ContainsKey(new Coordinate(48, 16));
     }
 
     /// <summary>A reference key is found via the exact same instance it was stored with.</summary>
     public static bool ReferenceKeyFindsSameInstance()
     {
-        // TODO: create one ReferenceKey, store it, and return whether ContainsKey finds it
-        //       using that SAME instance (true).
-        throw new NotImplementedException();
+        var key = new ReferenceKey(1);
+        var map = new Dictionary<ReferenceKey, string>();
+        map[key] = "value";
+        return map.ContainsKey(key);
     }
 
     /// <summary>
@@ -36,9 +37,9 @@ public static class KeyDemonstrations
     /// </summary>
     public static bool ReferenceKeyMissesFreshInstance()
     {
-        // TODO: store new ReferenceKey(1), then return !map.ContainsKey(new ReferenceKey(1)).
-        //       (A different instance does not match, because ReferenceKey has no equality.)
-        throw new NotImplementedException();
+        var map = new Dictionary<ReferenceKey, string>();
+        map[new ReferenceKey(1)] = "value";
+        return !map.ContainsKey(new ReferenceKey(1));
     }
 
     /// <summary>
@@ -47,33 +48,37 @@ public static class KeyDemonstrations
     /// </summary>
     public static bool MutatedKeyEntryIsLost()
     {
-        // TODO: create a MutableKey { Id = 1 }, store a value under it, THEN set key.Id = 2,
-        //       and return !map.ContainsKey(key).
-        throw new NotImplementedException();
+        var key = new MutableKey { Id = 1 };
+        var map = new Dictionary<MutableKey, string>();
+        map[key] = "value";
+        key.Id = 2;
+        return !map.ContainsKey(key);
     }
 
     /// <summary>After the mutation, even a fresh key with the original value cannot find the entry.</summary>
     public static bool MutatedEntryIsLostToOriginalValueToo()
     {
-        // TODO: same setup as above; after mutating, return
-        //       !map.ContainsKey(new MutableKey { Id = 1 }).
-        throw new NotImplementedException();
+        var key = new MutableKey { Id = 1 };
+        var map = new Dictionary<MutableKey, string>();
+        map[key] = "value";
+        key.Id = 2;
+        return !map.ContainsKey(new MutableKey { Id = 1 });
     }
 
     /// <summary>With <see cref="StringComparer.OrdinalIgnoreCase"/>, "vienna" finds "Vienna".</summary>
     public static bool OrdinalIgnoreCaseFinds()
     {
-        // TODO: build a Dictionary<string,int>(StringComparer.OrdinalIgnoreCase) with "Vienna",
-        //       then return whether it ContainsKey("vienna").
-        throw new NotImplementedException();
+        var dict = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        dict["Vienna"] = 1;
+        return dict.ContainsKey("vienna");
     }
 
     /// <summary>The default (ordinal) comparer treats "vienna" and "Vienna" as different keys.</summary>
     public static bool DefaultComparerMisses()
     {
-        // TODO: build a plain Dictionary<string,int> with "Vienna", then return
-        //       !dictionary.ContainsKey("vienna").
-        throw new NotImplementedException();
+        var dict = new Dictionary<string, int>();
+        dict["Vienna"] = 1;
+        return !dict.ContainsKey("vienna");
     }
 
     /// <summary>A per-day bookings map keyed by a NodaTime <see cref="LocalDate"/> (provided).</summary>
@@ -89,8 +94,7 @@ public static class KeyDemonstrations
     /// </summary>
     public static bool LocalDateFindsFreshInstance()
     {
-        // TODO: from BookingsByDate(), look up new LocalDate(2026, 5, 31) and return whether the
-        //       value you get back is 3 (use TryGetValue or the indexer).
-        throw new NotImplementedException();
+        var bookings = BookingsByDate();
+        return bookings.TryGetValue(new LocalDate(2026, 5, 31), out int count) && count == 3;
     }
 }
